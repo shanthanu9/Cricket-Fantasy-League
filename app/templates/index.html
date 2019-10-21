@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Hello {{ current_user.username }}!</h1>
+    <h2>Matches:</h2>
+    {% for match in matches %}
+    <li>{{ match.team1 }} vs {{ match.team2 }}</li>
+    {% endfor %}
+    <h2>Leaderboard</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Score</th>
+        </tr>
+        {% for player in leaderboard %}
+        <tr>
+            <td>{{ player.username }}</td>
+            <td>{{ player.score }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

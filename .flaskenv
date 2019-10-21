@@ -1,0 +1,2 @@
+FLASK_APP=cfl.py
+FLASK_DEBUG=1
