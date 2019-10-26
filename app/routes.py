@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
-from app.forms import LoginForm, RegistrationFrom
+from app.forms import LoginForm, RegistrationFrom, TeamSelectionForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
 from werkzeug.urls import url_parse
@@ -10,27 +10,10 @@ from werkzeug.urls import url_parse
 @app.route('/index')
 @login_required # TODO: this maynot be required
 def index():
-    matches = [
-        {
-            'team1': 'India',
-            'team2': 'RSA',
-        },
-        {
-            'team1': 'Australia',
-            'team2': 'England'
-        }
-    ]
-    leaderboard = [
-        {
-            'username': 'Varun',
-            'score': 50
-        },
-        {
-            'username': 'Roy',
-            'score': 40
-        }
-    ]
-    return render_template('index.html', title='Home', matches = matches, leaderboard = leaderboard)
+    # Fetch leaderboard from database
+    leaderboard = User.query.order_by(User.score.desc()).limit(5)
+    # TODO: Live updates to leaderboard
+    return render_template('index.html', title='Home', leaderboard = leaderboard)
 
 # Renders the login page
 @app.route('/login', methods=['GET', 'POST'])
@@ -70,3 +53,20 @@ def register():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+
+
+@app.route('/myteam', methods=['GET', 'POST'])
+def team_selection():
+    form = TeamSelectionForm()
+    # TODO: Replace this
+    match = {
+        't1': {
+            'name': 'India',
+            'players': ['player'+str(i) for i in range(11)]
+        },
+        't2': {
+            'name': 'RSA',
+            'players': ['player'+str(i) for i in range(11)]
+        }
+    }
+    return render_template('myteam.html', match=match, form=form)

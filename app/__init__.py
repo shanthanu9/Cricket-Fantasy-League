@@ -3,6 +3,7 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_socketio import SocketIO
 
 # The flask app
 app = Flask(__name__)
@@ -14,5 +15,7 @@ migrate = Migrate(app, db)
 # Login handler
 login = LoginManager(app)
 login.login_view = 'login' # Helpful for forcing anonymous users to login
+# Web Socket
+socketio = SocketIO(app)
 
-from app import routes, models
+from app import routes, models, sockets

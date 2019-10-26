@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <h1>{{ match.t1.name }}</h1>
+            <!-- {% for i in range(11) %}
+            <p>{{ match.t1.players[i] }} : </p>
+            {% endfor %} -->
+            <p>{{ form.t1_players() }}</p>
+        <h1>{{ match.t2.name }}</h1>
+            {% for i in range(11) %}
+            <p>{{ match.t2.players[i] }} : </p>
+            {% endfor %}
+    </form>
+{% endblock %}

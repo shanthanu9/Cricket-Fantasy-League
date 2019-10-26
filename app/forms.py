@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, FieldList
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import User
 
@@ -32,5 +32,12 @@ class RegistrationFrom(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('An account is already there with the given email ID.')
+
+class TeamSelectionForm(FlaskForm):
+    # TODO: Replace label with correct player name
+    # t1_players = [BooleanField('player') for i in range(11)]
+    # t2_players = [BooleanField('player') for i in range(11)]
+    t1_players = FieldList(BooleanField('team1', min_entries=3, max_entries=11))
+    t2_players = FieldList(BooleanField('team2', min_entries=0, max_entries=11))
 
 # TODO: Team selection form

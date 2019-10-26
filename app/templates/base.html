@@ -1,7 +1,7 @@
 <html>
     <head>
         <!-- Include CSS styling-->
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/common.css')}}">
+        {% block styles %}{% endblock %}
 
         {% if title %}
         <title>{{title}} - CFL</title>
@@ -34,5 +34,6 @@
         {% endwith %}
         
         {% block content %}{% endblock %}
+        {% block scripts %}{% endblock %}
     </body>
 </html>
