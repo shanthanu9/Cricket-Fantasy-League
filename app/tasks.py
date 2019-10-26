@@ -3,7 +3,6 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import json
-from rq import get_current_job
 from app import socketio
 from pprint import pprint
 
@@ -12,7 +11,6 @@ def get_matches():
     Returns a dictionary with all live
     and upcoming match details
     """
-    job = get_current_job()
     URL = 'https://www.espncricinfo.com/'
 
     # Get HTML page and `soup` it
