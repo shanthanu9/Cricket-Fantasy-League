@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
 {% block styles %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/common.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/common.css') }}">
 {% endblock %}
 
-{% block content %}<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/common.css')}}">
+{% block content %}
     <h1>Hello {{ current_user.username }}!</h1>
     <h2>Matches:</h2>
     <div id="matches"></div>
@@ -24,22 +24,10 @@
 {% endblock %}
 
 {% block scripts %}
-<!-- JQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<!-- socketio -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
-<!-- Custom js script-->
-<script>
-    $(document).ready(function() {
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
-        socket.on('matches', function(msg) {
-            console.log(msg.matches)
-            $('#matches').empty();
-            for (const match of msg.matches) {
-                $('#matches').append('<li>'+match+'</li>')
-            }
-            console.log(msg.leagues)    
-        });
-    });
-</script>
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- socketio -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+    <!-- Custom js script-->
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 {% endblock %}
