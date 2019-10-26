@@ -1,25 +1,77 @@
 {% extends 'base.html' %}
 
+{% block styles %}
+    <!--Bootsrap 4 CDN-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!--Fontawesome CDN-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    
+    <!--Custom styles-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+{% endblock %}
+
 {% block content %}
-    <h1>Sign In</h1>
-    <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}
-            {% for error in form.username.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32 )}}
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-        <p>{{form.submit() }}</p>
-        <p>New User? <a href="{{ url_for('register') }}">Click to Register!</a></p>
-    </form>
+    <div class="container">
+            <div class="d-flex justify-content-center h-100">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Sign In</h3>
+                        <div class="d-flex justify-content-end social_icon">
+                            <span><i class="fab fa-facebook-square"></i></span>
+                            <span><i class="fab fa-google-plus-square"></i></span>
+                            <!-- <span><i class="fab fa-twitter-square"></i></span> -->
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="" method="post" novalidate>
+                            {{ form.hidden_tag() }}
+                            <div>
+                                    {% for error in form.username.errors %}
+                                    <small class="text-danger">[{{ error }}]</small>
+                                    {% endfor %}
+                            </div>
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                </div>
+                                <!-- <input type="text" class="form-control" placeholder="username"> -->
+                                {{ form.username(size=32, **{'type':'text', 'class':'form-control', 'placeholder':'Username'}) }}
+                            </div> 
+                            <div>
+                                    {% for error in form.password.errors %}
+                                    <small class="text-danger">[{{ error }}]</small>
+                                    {% endfor %}
+                            </div>
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                </div>
+                                <!-- <input type="password" class="form-control" placeholder="password"> -->
+                                {{ form.password(size=32, **{'type':'password', 'class':'form-control', 'placeholder':'Password'}) }}
+                            </div>
+                            <div class="row align-items-center remember">
+                                <!-- <input type="checkbox">Remember Me -->
+                                {{ form.remember_me() }}Remember Me
+                            </div>
+                            <div class="form-group">
+                                <!-- <input type="submit" value="Login" class="btn float-right login_btn"> -->
+                                {{ form.submit(**{'class':'btn float-right login_btn'}) }}
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-center links">
+                            Don't have an account?<a href="{{ url_for('register') }}">Sign Up</a>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <a href="#">Forgot your password?</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 {% endblock %}
