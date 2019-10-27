@@ -19,7 +19,7 @@ class RegistrationFrom(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Register')
+    submit = SubmitField('Register Now')
 
     # All `validate_*` functions are taken as custom validators by WTForms
 
