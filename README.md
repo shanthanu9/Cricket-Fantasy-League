@@ -26,6 +26,6 @@ To start the app, run
 $ python cfl.py
 ```
 
-## Contribitors
+## Contributors
 - Shanthanu S Rai
 - Varun Pattar
