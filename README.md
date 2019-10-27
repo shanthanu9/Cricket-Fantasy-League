@@ -1,8 +1,10 @@
 # Cricket-Fantasy-League
 
+All live cricket updates are obtained from [https://www.espncricinfo.com](https://www.espncricinfo.com/).
+
 ## Setup
 
-`requirements.txt` contains all the required packages. Preferably use a virtual environment. Run
+`requirements.txt` contains all the required packages. Preferably use a virtual environment. Run 
 ```bash
 $ pip install -r requirements.txt
 ```
@@ -14,10 +16,13 @@ SQLAlchemy will require the following
 $ sudo apt-get install libmysqlclient-dev
 ```
 
-For updating a SQL , checkout `config.py`. Once appropriate user is added, run
+For setting up the database, checkout `config.py`. Once appropriate database is created, run
 ```bash
 $ flask db upgrade
 ```
+
+All latest cricket player details can be obtained by running python scripts in `scripts` folder. Place the CSV files generated in
+csv folder and run `add_records_to_db.py` to add latest player details to database.
 
 ## Starting app
 

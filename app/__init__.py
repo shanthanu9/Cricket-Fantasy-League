@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 # Set database and migrations
 db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+migrate = Migrate(app, db, compare_type=True)
 # Login handler
 login = LoginManager(app)
 login.login_view = 'login' # Helpful for forcing anonymous users to login

@@ -26,6 +26,49 @@ class User(UserMixin, db.Model):
 
     # TODO: Randomly assign a profile pic to each user...
 
+class Batting(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    player = db.Column(db.String(64))
+    span = db.Column(db.String(10))
+    matches = db.Column(db.String(6))
+    innings = db.Column(db.String(6))
+    no = db.Column(db.String(6))
+    runs = db.Column(db.String(6))
+    hs = db.Column(db.String(6))
+    ave = db.Column(db.String(6))
+    bf = db.Column(db.String(6))
+    sr = db.Column(db.String(6))
+    hundreds = db.Column(db.String(6))
+    fifties = db.Column(db.String(6))
+    ducks = db.Column(db.String(6))
+
+class Bowling(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    player = db.Column(db.String(64))
+    span = db.Column(db.String(10))
+    matches = db.Column(db.String(6))
+    innings = db.Column(db.String(6))
+    balls = db.Column(db.String(6))
+    runs = db.Column(db.String(6))
+    wickets = db.Column(db.String(6))
+    best = db.Column(db.String(6))
+    ave = db.Column(db.String(6))
+    econ = db.Column(db.String(6))
+    sr = db.Column(db.String(6))
+    four = db.Column(db.String(6))
+    five = db.Column(db.String(6))
+
+class Fielding(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    player = db.Column(db.String(64))
+    span = db.Column(db.String(10))
+    dismissals = db.Column(db.String(6))
+    catches = db.Column(db.String(6))
+    stumpings =db.Column(db.String(6))
+    catch_wk = db.Column(db.String(6))
+    catch_fi = db.Column(db.String(6))
+    best = db.Column(db.String(20))
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
