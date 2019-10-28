@@ -57,9 +57,8 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
-@app.route('/myteam', methods=['GET', 'POST'])
+@app.route('/myteam', methods=['GET'])
 def team_selection():
-    match_id = int(request.args.get('match_id'))
+    match_id = int(request.args.get('match_id', 0))
     match = get_match_details(match_id)
-
-    return render_template('myteam.html', match=match, form=form)
+    return render_template('myteam.html', match_id=match_id, match=match)

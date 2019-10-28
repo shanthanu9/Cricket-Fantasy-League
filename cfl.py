@@ -12,4 +12,5 @@ def make_shell_context():
     }
 
 if __name__ == '__main__':
+    # Cache match details before running the app
     socketio.run(app, debug=True)

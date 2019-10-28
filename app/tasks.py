@@ -5,6 +5,7 @@ import re
 import json
 from app import socketio
 from pprint import pprint
+import sys
 
 # Keeps track of all upcoming, live and recently concluded matches.
 matches = [] # Ideally should be in database. But this is okay bcoz number of matches is quite less (< 10)
@@ -76,6 +77,7 @@ def update_matches(period=0, infinite=True):
         if temp_data != matches_data:
             matches_data = temp_data
             emit_matches(socketio, matches_data)
+            cache_match_details()
         socketio.sleep(period)
 
 def get_match_details(match_id):
@@ -100,6 +102,8 @@ def get_match_details(match_id):
     apiURL = temp_data['apiUrls']['urls'][0]
     data = requests.get(apiURL).json()
 
+    print('SIZE: ' + str(sys.getsizeof(data)))
+
     match_details = get_match_details_from_raw_data(data)
     return match_details
 
@@ -108,12 +112,25 @@ def get_match_details_from_raw_data(data):
     Extracts relevant details from data 
     and returns match details.
     """
-    pass
+    match = {}
 
-def emit_match_details(socketio, match_data):
+    #TODO: JSON
+
+    # Get roster
+    teams = []
+    for roster in data['rosters']:
+        team = []
+        for p in roster['roster']:
+            player = {}
+            player['name'] = p['athlete']['battingName']
+            team.append(player)
+        teams.append(team)
+    
+    match['teams'] = teams
+    return match
+
+def cache_match_details():
     """
-    `Emits` back match details via socketio.
-    To be requested by clients only.
+    To speed up fetching match details.
     """
-    s_match = get_match_details_from_raw_data(match_data)
-    socketio.emit('match', {'match': s_match})
+    pass
