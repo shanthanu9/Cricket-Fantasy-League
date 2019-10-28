@@ -4,6 +4,7 @@ from app.forms import LoginForm, RegistrationFrom, TeamSelectionForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
 from werkzeug.urls import url_parse
+from app.tasks import matches, get_match_details
 
 # Renders the home page
 @app.route('/')
@@ -58,16 +59,7 @@ def register():
 
 @app.route('/myteam', methods=['GET', 'POST'])
 def team_selection():
-    form = TeamSelectionForm()
-    # TODO: Replace this
-    match = {
-        't1': {
-            'name': 'India',
-            'players': ['player'+str(i) for i in range(11)]
-        },
-        't2': {
-            'name': 'RSA',
-            'players': ['player'+str(i) for i in range(11)]
-        }
-    }
+    match_id = int(request.args.get('match_id'))
+    match = get_match_details(match_id)
+
     return render_template('myteam.html', match=match, form=form)

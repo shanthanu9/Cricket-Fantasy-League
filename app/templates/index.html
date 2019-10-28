@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='slick/slick.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='slick/slick-theme.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}"/>
+{% endblock %}
+
 {% block content %}
     <h1>Hello {{ current_user.username }}!</h1>
     <h2>Matches:</h2>
@@ -24,6 +30,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!-- socketio -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+    <!-- Slick Carousal -->
+    <script type="text/javascript" src="{{ url_for('static', filename='slick/slick.min.js') }}"></script>
     <!-- Custom js script-->
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 {% endblock %}

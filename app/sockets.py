@@ -1,6 +1,6 @@
 from app import socketio
 from threading import Lock
-from app.tasks import update_matches, get_matches, emit_matches
+from app.tasks import update_matches, get_matches_as_raw_data, emit_matches, matches
 from flask_socketio import SocketIO, emit
 
 # For backgound processes
@@ -10,7 +10,7 @@ thread_lock = Lock()
 @socketio.on('connect')
 def connect():
     # Update connected user with latest match details
-    matches_data = get_matches()
+    matches_data = get_matches_as_raw_data()
     emit_matches(socketio, matches_data)
     print('User connected')
     global thread
