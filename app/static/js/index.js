@@ -1,15 +1,29 @@
 $(document).ready(function() {
     var $matches = $('#matches');
 
+    // Slick Carousal
+    $matches.slick({
+        infinite: true,
+        slidesToShow: 3,
+        slidesToScroll: 3
+    });
+
     // Socket IO
     var socket = io.connect(`http://${document.domain}:${location.port}`);
 
     socket.on('matches', function(msg) {
         console.log(msg.matches);
+        $matches.slick('unslick');
         $matches.empty();
-        $.each(msg.matches, function(i, match) {
+        for(var i = 0; i < msg.matches.length; i++) {
+            match = msg.matches[i];
+            console.log('Added match');
             $matches.append(
-                `<div class="match">`+
+                `<div class="match card">`+
+                    `<div class="bar">`+
+                    `<div class="emptybar"></div>`+
+                    `<div class="filledbar"></div>`+
+                    `</div>`+
                     `<p>${match.status}<\p>`+
                     `<p>${match.teams[0].name} : ${match.teams[0].score}</p>`+
                     `<p>${match.teams[1].name} : ${match.teams[1].score}</p>`+
@@ -19,7 +33,7 @@ $(document).ready(function() {
         });
         // slick carousal
         $matches.slick({
-            infinite: true,
+            // infinite: true,
             slidesToShow: 3,
             slidesToScroll: 3
         });
