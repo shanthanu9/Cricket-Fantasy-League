@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_socketio import SocketIO
+from flask_mail import Mail
 
 # The flask app
 app = Flask(__name__)
@@ -17,5 +18,7 @@ login = LoginManager(app)
 login.login_view = 'login' # Helpful for forcing anonymous users to login
 # Web Socket
 socketio = SocketIO(app)
+# Email support
+mail = Mail(app)
 
 from app import routes, models, sockets

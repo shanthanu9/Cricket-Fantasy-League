@@ -1,14 +1,15 @@
 # from time import sleep
 import requests
+from app import db
 from bs4 import BeautifulSoup
 import re
 import json
 from app import socketio
-from pprint import pprint
-import sys
+from threading import Lock
 
 # Keeps track of all upcoming, live and recently concluded matches.
 matches = [] # Ideally should be in database. But this is okay bcoz number of matches is quite less (< 10)
+matches_lock = Lock()
 
 def get_matches_as_raw_data():
     """
@@ -46,6 +47,7 @@ def get_matches_from_raw_data(data):
             match = {}
             match['status'] = event['fullStatus']['type']['description']
             match['link'] = event['link'] 
+            match['id'] = event['id']
             match['teams'] = teams
             s_matches.append(match)
     return s_matches
@@ -65,7 +67,7 @@ def emit_matches(socketio, matches_data):
 
 def update_matches(period=0, infinite=True):
     """
-    Broadcasts updates in match details to all clients.
+    Broadcasts updates in latest matches to all clients.
     
     `period`: Keeps checking for updates at `period` seconds intervals
     `infinite`: If True, then this function runs forever, else will `emit`
@@ -74,20 +76,33 @@ def update_matches(period=0, infinite=True):
     matches_data = {}
     while infinite:
         temp_data = get_matches_as_raw_data()
-        if temp_data != matches_data:
-            matches_data = temp_data
-            emit_matches(socketio, matches_data)
-            cache_match_details()
+        with matches_lock:
+            if temp_data != matches_data:
+                matches_data = temp_data
+                emit_matches(socketio, matches_data)
         socketio.sleep(period)
 
-def get_match_details(match_id):
+def get_match_from_id(match_id):
     """
-    Returns a dictionary with given match details.
-    `match_id`: Index in matches global variable
+    Returns match from `matches` array 
+    based on `match_id`.
+    If `match_id` doesn't match any of the 
+    matches in `matches`, `None` is returned.
+    """
+    for match in matches:
+        if match_id == match['id']:
+            return match
+    return None
+        
+
+def get_match_raw_data(match_id):
+    """
+    Gets match data from `URL` of the match in 
+    cricinfo.
     """
     # Get match URL
     global matches
-    match = matches[match_id]
+    match = get_match_from_id(match_id)
     URL = match['link']
 
     # Get HTML page and `soup` it
@@ -101,16 +116,24 @@ def get_match_details(match_id):
     # Extract data from REST API URL in `data`
     apiURL = temp_data['apiUrls']['urls'][0]
     data = requests.get(apiURL).json()
+    # print(json.dumps(data))
+    return data
 
-    print('SIZE: ' + str(sys.getsizeof(data)))
+# Team details include: Players playing in both teams, TODO: score of each player
 
-    match_details = get_match_details_from_raw_data(data)
-    return match_details
+def get_team_details(match_id):
+    """
+    Returns a dictionary with given team details.
+    `match_id`: Index in matches global variable
+    """
+    data = get_match_raw_data(match_id)
+    team_details = get_team_details_from_raw_data(data)
+    return team_details
 
-def get_match_details_from_raw_data(data):
+def get_team_details_from_raw_data(data):
     """
     Extracts relevant details from data 
-    and returns match details.
+    and returns team details.
     """
     match = {}
 
@@ -129,8 +152,62 @@ def get_match_details_from_raw_data(data):
     match['teams'] = teams
     return match
 
-def cache_match_details():
+# Match details include: live score, all player detalis (runs scored, wickets taken, etc)
+
+def get_match_details(match_id):
     """
-    To speed up fetching match details.
+    Returns a dictionary with given match details.
+    `match_id`: Index in matches global variable
+    """
+    data = get_match_raw_data(match_id)
+    match_details = get_match_details_from_raw_data(data)
+    return match_details
+
+def get_match_details_from_raw_data(data):
+    """
+    Extracts relevant details from data
+    and returns match details.
+    """
+    return data['matchcards']
+
+def update_match_details(match_id, period):
+    """
+    Broadcasts updates in match details to all clients.
+    
+    `period`: Keeps checking for updates at `period` seconds intervals
+    """
+    while True:
+        with matches_lock:
+            match = matches[match_id]
+            match_details = get_match_details(match_id)
+            emit_match_details(socketio, match_details)            
+        socketio.sleep(period)
+
+def emit_match_details(socketio, match_details):
+    """
+    `Emits` back match details via socketio.
+    If the client requests it, reply goes back 
+    to the client.
+    If the server requests it, reply will be broadcasted
+    to all clients.
+    """
+    socketio.emit('live-match', {'match': match_details})
+
+def cache_match_data():
+    """
+    To speed up fetching match data.
     """
     pass
+
+
+def get_player_score(player_name):
+    """
+    Give player score based on their record.
+    Player not present in database will be 
+    assigned a default low score.
+    """
+    low_score = 5
+    high_score = 50
+    pass
+
+

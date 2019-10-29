@@ -2,5 +2,17 @@
 
 {% block content %}
     <h1>{{ match_id }}</h1>
-    <p>{{ match }}</p>
+    <!-- <p>{{ match }}</p> -->
+    <div id="teams"></div>
+    <div id="chosen"></div>
+{% endblock %}
+
+{% block scripts %}
+ <!-- JQuery -->
+ <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+ <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+ <!-- socketio -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+ <!-- Custom JS -->
+ <script src="{{ url_for('static', filename='js/myteam.js') }}"></script>
 {% endblock %}
