@@ -12,8 +12,8 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    # Give some default value to score
     score = db.Column(db.Integer)
+    match_id = db.Column(db.String(20))
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
