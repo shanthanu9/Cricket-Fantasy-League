@@ -1,12 +1,7 @@
-{% extends "base.html" %}
-
-{% block styles %}
-    <!-- Custom style -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
-{% endblock %}
-
-{% block content %}
-    <!-- <h1>Register</h1>
+{% extends "base.html" %} {% block styles %}
+<!-- Custom style -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}"> {% endblock %} {% block content %}
+<!-- <h1>Register</h1>
     <form action="" method="post">
         {{ form.hidden_tag() }}
         <p>
@@ -39,50 +34,46 @@
         </p>
         <p>{{ form.submit() }}</p>
     </form> -->
-    <div class="signup-form">
-        <form action="" method="post">
-            {{ form.hidden_tag() }}
-            <h2>Register</h2>
-            <p class="hint-text">Create your account. It's free and only takes a minute.</p>
-            {% for error in form.username.errors %}
-            <small class="text-danger">{{ error }}</small>
-            {% endfor %}
-            <div class="form-group">
-                <!-- <div class="row">
+<div class="signup-form">
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <h2>Register</h2>
+        <p class="hint-text">Create your account. It's free and only takes a minute.</p>
+        {% for error in form.username.errors %}
+        <small class="text-danger">{{ error }}</small> {% endfor %}
+        <div class="form-group">
+            <!-- <div class="row">
                     <div class="col-xs-6"><input type="text" class="form-control" name="first_name" placeholder="First Name" required="required"></div>
                     <div class="col-xs-6"><input type="text" class="form-control" name="last_name" placeholder="Last Name" required="required"></div>
                 </div> -->
-                {{ form.username(size=32, **{'type':'text', 'class':'form-control text-dark', 'placeholder':'Username'}) }}
-            </div>
-            {% for error in form.email.errors %}
-            <small class="text-danger">{{ error }}</small>
-            {% endfor %}
-            <div class="form-group">
-                <!-- <input type="email" class="form-control" name="email" placeholder="Email" required="required"> -->
-                {{ form.email(size=64, **{'class':'form-control text-dark', 'placeholder':'Email', 'type':'email'}) }}
-            </div>
-            {% for error in form.password.errors %}
-            <small class="text-danger">{{ error }}</small>
-            {% endfor %}
-            <div class="form-group">
-                <!-- <input type="password" class="form-control" name="password" placeholder="Password" required="required"> -->
-                {{ form.password(size=32, **{'class':'form-control', 'placeholder':'Password', 'type':'password'}) }}
-            </div>
-            {% for error in form.password2.errors %}
-            <small class="text-danger">{{ error }}</small>
-            {% endfor %}
-            <div class="form-group">
-                <!-- <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required="required"> -->
-                {{ form.password2(size=32, **{'class':'form-control', 'placeholder':'Confirm Password', 'type':'password'}) }}
-            </div>
-            <!-- <div class="form-group">
+            {{ form.username(size=32, **{'type':'text', 'class':'form-control text-dark', 'placeholder':'Username'}) }}
+        </div>
+        {% for error in form.email.errors %}
+        <small class="text-danger">{{ error }}</small> {% endfor %}
+        <div class="form-group">
+            <!-- <input type="email" class="form-control" name="email" placeholder="Email" required="required"> -->
+            {{ form.email(size=64, **{'class':'form-control text-dark', 'placeholder':'Email', 'type':'email'}) }}
+        </div>
+        {% for error in form.password.errors %}
+        <small class="text-danger">{{ error }}</small> {% endfor %}
+        <div class="form-group">
+            <!-- <input type="password" class="form-control" name="password" placeholder="Password" required="required"> -->
+            {{ form.password(size=32, **{'class':'form-control', 'placeholder':'Password', 'type':'password'}) }}
+        </div>
+        {% for error in form.password2.errors %}
+        <small class="text-danger">{{ error }}</small> {% endfor %}
+        <div class="form-group">
+            <!-- <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required="required"> -->
+            {{ form.password2(size=32, **{'class':'form-control', 'placeholder':'Confirm Password', 'type':'password'}) }}
+        </div>
+        <!-- <div class="form-group">
                 <label class="checkbox-inline"><input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a></label>
             </div> -->
-            <div class="form-group">
-                <!-- <button type="submit" class="btn btn-success btn-lg btn-block">Register Now</button> -->
-                {{ form.submit(**{'class':'btn btn-success btn-lg btn-block'}) }}
-            </div>
-        </form>
-        <div class="text-center">Already have an account? <a href="{{ url_for('login') }}">Sign in</a></div>
+        <div class="form-group">
+            <!-- <button type="submit" class="btn btn-success btn-lg btn-block">Register Now</button> -->
+            {{ form.submit(**{'class':'btn btn-success btn-lg btn-block'}) }}
         </div>
+    </form>
+    <div class="text-center">Already have an account? <a href="{{ url_for('login') }}">Sign in</a></div>
+</div>
 {% endblock %}

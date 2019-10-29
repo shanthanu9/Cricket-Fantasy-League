@@ -1,6 +1,6 @@
 html,
 body {
-    background-image: url('http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg');
+    background-image: url('../images/backLogin.jpeg');
     background-size: cover;
     background-repeat: no-repeat;
     height: 100%;
@@ -42,7 +42,8 @@ body {
 
 .input-group-prepend span {
     width: 50px;
-    background-color: #FFC312;
+    /* background-color: #FFC312; */
+    background-color: #FFC300;
     color: black;
     border: 0 !important;
 }
@@ -65,7 +66,7 @@ input:focus {
 
 .login_btn {
     color: black;
-    background-color: #FFC312;
+    background-color: #FFC300;
     width: 100px;
 }
 
