@@ -20,9 +20,6 @@ $(document).ready(function() {
             console.log('Added match');
             $matches.append(
                 `<div class="match card">`+
-                    `<div class="bar">`+
-                    `<div class="emptybar"></div>`+
-                    `<div class="filledbar"></div>`+
                     `</div>`+
                     `<p>${match.status}<\p>`+
                     `<p>${match.teams[0].name} : ${match.teams[0].score}</p>`+
@@ -30,7 +27,7 @@ $(document).ready(function() {
                     `<button match_id="${match.id}" class="make_team">Make team!</button>`+
                 `</div>`
                 );
-        });
+        }
         // slick carousal
         $matches.slick({
             // infinite: true,
