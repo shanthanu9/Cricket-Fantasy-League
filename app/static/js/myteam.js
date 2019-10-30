@@ -1,23 +1,32 @@
 $(document).ready(function() {
-    // TODO: Replace with player details fetched from URL
-    var teams = [[], []];
-    for(var i = 0; i < 11; i++) {
-        teams[0].push(`a${i}`);
-        teams[1].push(`b${i}`);
-    }
 
-    // Append buttons to div tag
-    var i = 0;
-    for(var team of teams) {
-        var player_id = 0;
-        for(player of team) {
-            $('#teams').append(
-                `<button class="select" id="team-${i}-player-${player_id}">${player}</button>`
-            );
-            player_id++;
+
+    const url = new URL(window.location.href);
+    var match_id = url.searchParams.get('match_id');
+    console.log(match_id)
+
+    // Socket IO
+    var socket = io.connect(`http://${document.domain}:${location.port}`);
+    
+    socket.on('connect', function() {
+        console.log('Request team details');
+        socket.emit('get_match', {data: match_id});
+    });
+
+    socket.on('match', function(msg) {
+        console.log('Fetched team details');
+        let teams = msg.match.teams;
+        for(let i = 0; i < teams.length; i++) {
+            let team = teams[i];
+            for(let player_id = 0; player_id < team.length; player_id++) {
+                player = team[player_id];
+                console.log(player)
+                $(`#team-${i+1}`).append(
+                    `<button class="select" id="team-${i}-player-${player_id}">${player.name}</button>`
+                );
+            }
         }
-        i++;
-    } 
+    });
 
     // Selecting players
     $(document).on('click', '.select', function() {

@@ -1,6 +1,7 @@
+from flask import request
 from app import socketio
 from threading import Lock
-from app.tasks import update_matches, get_matches_as_raw_data, emit_matches, matches, update_match_details
+from app.tasks import update_matches, get_matches_as_raw_data, emit_matches, matches, update_match_details, get_team_details
 from flask_socketio import SocketIO, emit
 
 # For backgound processes
@@ -23,4 +24,10 @@ def connect():
         #     period = 10 # 10s
         #     live_match_thread = socketio.start_background_task(update_match_details, period, match_id)
 
-# @socketio.on('')
+@socketio.on('get_match')
+def connect_team(msg):
+    print('YEAH!!!!!!!!!!!!!!')
+    match_id = msg['data']
+    match = get_team_details(match_id)
+    socketio.emit('match', {'match': match})
+    print('Emitted team details')
