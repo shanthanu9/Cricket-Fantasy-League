@@ -67,10 +67,11 @@ def create_team():
     match_id = request.form['match_id']
     player_count = request.form['player_count']
     player_ids = eval(request.form['players'])
-    user_id = User.query.filter_by(username=current_user.username).first().id
+    user = User.query.filter_by(username=current_user.username).first()
+    user.match_id = int(match_id)
     for player_id in player_ids:
         print(player_id)
-        c = ChosenPlayer(user_id=user_id, player_id=player_id)
+        c = ChosenPlayer(user_id=user.id, player_id=player_id)
         db.session.add(c)
     db.session.commit()
     print('MATCH-ID>>>>>>>>>'+match_id)

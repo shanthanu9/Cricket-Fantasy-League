@@ -24,17 +24,17 @@ def connect():
             matches_thread = socketio.start_background_task(update_matches, period)
         # if match_id is not None:
         #     period = 10 # 10s
-        #     live_match_thread = socketio.start_background_task(update_match_details, period, match_id)
+        #     live_match_thread = socketio.start_background_task(update_match_details, socketio, match_id, period)
     
     user = User.query.filter_by(username=current_user.username).first()
     if user is not None and user.match_id is not None:
         period = 20 # 20s
-        socketio.start_background_task(udpate_match_details, socketio, user.match_id, period)
+        socketio.start_background_task(update_match_details, socketio, user.match_id, period)
 
 @socketio.on('get_match')
 def connect_team(msg):
     print('YEAH!!!!!!!!!!!!!!')
     match_id = msg['data']
     match = get_team_details(match_id)
-    socketio.emit('match', {'match': match})
+    socketio.emit('match', {'match': match}, broadcast=False)
     print('Emitted team details')

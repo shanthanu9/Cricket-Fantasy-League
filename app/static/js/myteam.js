@@ -18,6 +18,8 @@ $(document).ready(function() {
 
     socket.on('match', function(msg) {
         console.log('Fetched team details');
+        $('#team1').empty();
+        $('#team2').empty();
         let teams = msg.match.teams;
         for(let i = 0; i < teams.length; i++) {
             let team = teams[i];
@@ -33,8 +35,10 @@ $(document).ready(function() {
 
     // Selecting players
     $(document).on('click', '.select', function() {
-        if(player_count >= max_players)
+        if(player_count >= max_players) {
+            alert('You already have 11 players!')
             return;
+        }
         player_count++;
         players_chosen.push($(this).attr('data-id'))
         $('#chosen').append(
@@ -53,7 +57,11 @@ $(document).ready(function() {
 
     // Submit players
     $(document).on('click', '#submit-button', function() {
-        console.log('Submit my team!')
+        if(player_count != 11) {
+            alert("You should choose 11 players!");
+            return;
+        }
+        console.log('Submit my team!');
         var myteam = {
             match_id: match_id,
             player_count: player_count,

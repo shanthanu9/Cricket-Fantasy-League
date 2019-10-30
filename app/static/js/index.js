@@ -36,7 +36,7 @@ $(document).ready(function() {
     });
 
     socket.on('live_match', function(msg) {
-        console.log(msg.match)
+        console.log(msg.match);
     });
 
     // AJAX request for creating a team

@@ -194,6 +194,7 @@ def emit_match_details(socketio, match_details):
     If the server requests it, reply will be broadcasted
     to all clients.
     """
+    print('send back live match')
     socketio.emit('live_match', {'match': match_details})
 
 def cache_match_data():
