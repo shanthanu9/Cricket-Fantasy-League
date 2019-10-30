@@ -63,6 +63,15 @@ img {
     background-image: url(../images/backa.jpg);
 }
 
+.card1 {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    margin: auto;
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+    background-image: url(../images/backa.jpg);
+}
+
 .title {
     color: grey;
     font-size: 18px;
@@ -152,3 +161,34 @@ a:hover {
         -webkit-transform: scaleY(1.0);
     }
 }
+
+.live_match {
+    border: 1px solid rgb(15, 0, 71);
+    text-align: center;
+    /* margin-left: 100px; */
+    left:100px;
+    background: rgba(179, 203, 246, 0.534);
+    /* padding-left: 200px; */
+}
+
+#right {
+    padding-right: 300px;
+}
+
+#wrapper {
+    display:table;
+    /* width:100%; */
+  }
+  #row {
+    display:table-row;
+  }
+  #batting {
+    display:table-cell;
+    /* background-color:red; */
+    width:33%;
+  }
+  #bowling {
+    display:table-cell;
+    /* background-color:blue; */
+    width:33%;
+  }
