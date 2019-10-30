@@ -35,6 +35,10 @@ $(document).ready(function() {
         });
     });
 
+    socket.on('live_match', function(msg) {
+        console.log(msg.match)
+    });
+
     // AJAX request for creating a team
     $(document).on('click', '.make_team', function() { // This syntax because event listener is being added to dynamically created nodes
         var match_id = $(this).attr('match_id');

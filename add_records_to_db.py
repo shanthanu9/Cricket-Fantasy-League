@@ -5,6 +5,8 @@ from app.models import Batting, Bowling, Fielding
 # Batting
 df = pd.read_csv('csv/batting.csv')
 
+# Get a better scoring system
+
 for index, row in df.iterrows():
     p = Batting(player=row['Player'])
     p.span = row['Span']
@@ -19,6 +21,7 @@ for index, row in df.iterrows():
     p.hundreds = row['100']
     p.fifties = row['50']
     p.ducks = row['0']
+    p.score = 100
     db.session.add(p)
 
 db.session.commit()
@@ -41,6 +44,7 @@ for index, row in df.iterrows():
     p.sr = row['SR']
     p.four = row['4']
     p.fivee = row['5']
+    p.score = 100
     db.session.add(p)
 
 db.session.commit()
@@ -60,6 +64,7 @@ for index, row in df.iterrows():
     p.catch_wk = row['Ct Wk']
     p.catch_fi = row['Ct Fi']
     p.best = row['MD']
+    p.score = 100
     db.session.add(p)
 
 db.session.commit()

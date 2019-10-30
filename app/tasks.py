@@ -1,6 +1,7 @@
 # from time import sleep
 import requests
 from app import db
+from app.models import Fielding
 from bs4 import BeautifulSoup
 import re
 import json
@@ -146,6 +147,8 @@ def get_team_details_from_raw_data(data):
         for p in roster['roster']:
             player = {}
             player['name'] = p['athlete']['battingName']
+            player['id'] = get_player_id_from_name(player['name'])
+            player['score'] =  get_player_score_from_id(player['id'])
             team.append(player)
         teams.append(team)
     
@@ -170,15 +173,15 @@ def get_match_details_from_raw_data(data):
     """
     return data['matchcards']
 
-def update_match_details(match_id, period):
+def update_match_details(socketio, match_id, period):
     """
-    Broadcasts updates in match details to all clients.
+    Sends match details clients who ask for it.
     
     `period`: Keeps checking for updates at `period` seconds intervals
     """
     while True:
         with matches_lock:
-            match = matches[match_id]
+            match = get_match_from_id(match_id)
             match_details = get_match_details(match_id)
             emit_match_details(socketio, match_details)            
         socketio.sleep(period)
@@ -191,7 +194,7 @@ def emit_match_details(socketio, match_details):
     If the server requests it, reply will be broadcasted
     to all clients.
     """
-    socketio.emit('live-match', {'match': match_details})
+    socketio.emit('live_match', {'match': match_details})
 
 def cache_match_data():
     """
@@ -199,15 +202,25 @@ def cache_match_data():
     """
     pass
 
-
-def get_player_score(player_name):
+def get_player_id_from_name(player_name):
     """
-    Give player score based on their record.
-    Player not present in database will be 
-    assigned a default low score.
+    Get player from `Fielding` table.
+    If not present, then is added to `Fielding` table 
+    with default low score and new id is returned
     """
-    low_score = 5
-    high_score = 50
-    pass
+    search="%{}%".format(player_name)
+    player = Fielding.query.filter(Fielding.player.like(search)).first()
+    if player is None:
+        new_player = Fielding(player=player_name)
+        new_player.score = 5
+        db.session.add(new_player)
+        db.session.commit()
+        return new_player.id
+    return player.id
 
+def get_player_score_from_id(player_id):
+    """
+    Get score of player from batting
+    """
+    return db.session.query(Fielding).get(player_id).score
 

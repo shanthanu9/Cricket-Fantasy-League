@@ -15,6 +15,8 @@ class User(UserMixin, db.Model):
     score = db.Column(db.Integer)
     match_id = db.Column(db.String(20))
 
+    chosen_players = db.relationship('ChosenPlayer')
+
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
@@ -41,6 +43,7 @@ class Batting(db.Model):
     hundreds = db.Column(db.String(6))
     fifties = db.Column(db.String(6))
     ducks = db.Column(db.String(6))
+    score = db.Column(db.Float)
 
 class Bowling(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -57,6 +60,7 @@ class Bowling(db.Model):
     sr = db.Column(db.String(6))
     four = db.Column(db.String(6))
     five = db.Column(db.String(6))
+    score = db.Column(db.Float)
 
 class Fielding(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -68,6 +72,14 @@ class Fielding(db.Model):
     catch_wk = db.Column(db.String(6))
     catch_fi = db.Column(db.String(6))
     best = db.Column(db.String(20))
+    score = db.Column(db.Float)
+
+    users = db.relationship('ChosenPlayer')
+
+class ChosenPlayer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    player_id = db.Column(db.Integer, db.ForeignKey('fielding.id'))
 
 @login.user_loader
 def load_user(id):

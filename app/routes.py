@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request
 from app import app, db
 from app.forms import LoginForm, RegistrationFrom, TeamSelectionForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User
+from app.models import User, ChosenPlayer
 from werkzeug.urls import url_parse
 from app.tasks import matches, get_team_details
 
@@ -61,3 +61,17 @@ def register():
 def team_selection():
     match_id = request.args.get('match_id', 0)
     return render_template('myteam.html', match_id=match_id)
+
+@app.route('/createteam', methods=['POST'])
+def create_team():
+    match_id = request.form['match_id']
+    player_count = request.form['player_count']
+    player_ids = eval(request.form['players'])
+    user_id = User.query.filter_by(username=current_user.username).first().id
+    for player_id in player_ids:
+        print(player_id)
+        c = ChosenPlayer(user_id=user_id, player_id=player_id)
+        db.session.add(c)
+    db.session.commit()
+    print('MATCH-ID>>>>>>>>>'+match_id)
+    return redirect(url_for('index'))
