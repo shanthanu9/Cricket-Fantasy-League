@@ -15,21 +15,33 @@
     </div>
 </div>
 
-<div align="right">
-    <table>
-        <h2>Leaderboard</h2>
-        <tr>
-            <th>Name</th>
-            <th>Score</th>
-        </tr>
-        {% for player in leaderboard %}
-        <tr>
-            <td>{{ player.username }}</td>
-            <td>{{ player.score }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+<br>
+<br><br><br>
+
+<div id="wrapper">    
+    <div class="card" align="left" id="left">
+            <p>Batting Team</p>
+            <p>Score : </p>
+            
+    </div>
+
+    <div align="right" id="right">
+        <table>
+            <h2>Leaderboard</h2>
+            <tr>
+                <th>Name</th>
+                <th>Score</th>
+            </tr>
+            {% for player in leaderboard %}
+            <tr>
+                <td>{{ player.username }}</td>
+                <td>{{ player.score }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </div>
+
 {% endblock %} 
 
 {% block scripts %}

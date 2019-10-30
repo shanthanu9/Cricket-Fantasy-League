@@ -22,7 +22,7 @@ $(document).ready(function() {
                 player = team[player_id];
                 console.log(player)
                 $(`#team-${i+1}`).append(
-                    `<button class="select" id="team-${i}-player-${player_id}">${player.name}</button>`
+                    `<button class="select example_e" id="team-${i}-player-${player_id}">${player.name}</button>`
                 );
             }
         }
@@ -31,7 +31,7 @@ $(document).ready(function() {
     // Selecting players
     $(document).on('click', '.select', function() {
         $('#chosen').append(
-            `<button class="deselect" id="${$(this).attr('id')}">${$(this).text()}</button>`
+            `<button class="deselect example_e" id="${$(this).attr('id')}">${$(this).text()}</button>`
         );
         $(this).attr('disabled', true);
     });

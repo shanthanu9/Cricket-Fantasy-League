@@ -1,22 +1,28 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
 
-{% block content %}
-    <h1>{{ match_id }}</h1>
-    <!-- <p>{{ match }}</p> -->
-    <div id="team-1"></div>
-    <div id="team-2"></div>
-    <div id="chosen"></div>
-    <div id="submit-team">
-        <button id="submit-button">Make Team!</button>
-    </div>
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/myteam.css') }}" />
 {% endblock %}
 
+{% block content %}
+<h1>{{ match_id }}</h1>
+<!-- <p>{{ match }}</p> -->
+<div id="wrapper">
+<div id="team-1" class="btn-group"></div>
+<div id="team-2" class="btn-group"></div>
+<div id="chosen" class="btn-group"></div>
+</div>
+<div id="submit-team">
+    <button id="submit-button">Make Team!</button>
+</div>
+{% endblock %} 
+
 {% block scripts %}
- <!-- JQuery -->
- <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
- <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
- <!-- socketio -->
- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
- <!-- Custom JS -->
- <script src="{{ url_for('static', filename='js/myteam.js') }}"></script>
+<!-- JQuery -->
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<!-- socketio -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+<!-- Custom JS -->
+<script src="{{ url_for('static', filename='js/myteam.js') }}"></script>
 {% endblock %}

@@ -1,0 +1,75 @@
+#wrapper {
+    display:table;
+    width:100%;
+  }
+  #row {
+    display:table-row;
+  }
+  #team-1 {
+    display:table-cell;
+    /* background-color:red; */
+    width:33%;
+  }
+  #team-2 {
+    display:table-cell;
+    /* background-color:blue; */
+    width:33%;
+  }
+  #chosen {
+    display:table-cell;
+    /* background-color:#bada55; */
+    width:34%;
+  }
+
+  .btn-group button {
+    /* background-color: rgb(32, 1, 105); Green background */
+    /* border: 1px solid green; Green border */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    width: 50%; /* Set a width if needed */
+    display: block; /* Make the buttons appear below each other */
+  }
+  
+  .btn-group button:not(:last-child) {
+    border-bottom: none; /* Prevent double borders */
+  }
+  
+  /* Add a background color on hover */
+  /* .btn-group button:hover {
+    background-color: #3e8e41;
+  } */
+
+  .btn-group button:disabled,
+  button[disabled]{
+    border: 1px solid #999999;
+    background-color: #af6868;
+    color: #c265658e;
+  }
+
+  .example_e {
+    border: none;
+    background: #42b5d1be;
+    color: #0f0053 !important;
+    font-weight: 100;
+    padding: 20px;
+    text-transform: uppercase;
+    border-radius: 6px;
+    display: inline-block;
+    transition: all 0.3s ease 0s;
+    }
+
+.example_e:hover {
+    color: #404040 !important;
+    font-weight: 700 !important;
+    letter-spacing: 3px;
+    background: none;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    transition: all 0.3s ease 0s;
+    }
+
+body {
+    background-image: url(../images/back.png);
+}
+
