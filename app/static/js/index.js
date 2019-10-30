@@ -20,7 +20,6 @@ $(document).ready(function() {
             console.log('Added match');
             $matches.append(
                 `<div class="match card">`+
-                    `</div>`+
                     `<p>${match.status}<\p>`+
                     `<p>${match.teams[0].name} : ${match.teams[0].score}</p>`+
                     `<p>${match.teams[1].name} : ${match.teams[1].score}</p>`+
@@ -30,7 +29,7 @@ $(document).ready(function() {
         }
         // slick carousal
         $matches.slick({
-            // infinite: true,
+            infinite: true,
             slidesToShow: 3,
             slidesToScroll: 3
         });
