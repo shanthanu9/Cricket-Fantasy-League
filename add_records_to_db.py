@@ -21,7 +21,10 @@ for index, row in df.iterrows():
     p.hundreds = row['100']
     p.fifties = row['50']
     p.ducks = row['0']
-    p.score = 100
+    if p.runs != '-':
+        p.score = int(p.runs)/200
+    else:
+        p.score = 0
     db.session.add(p)
 
 db.session.commit()
@@ -44,7 +47,10 @@ for index, row in df.iterrows():
     p.sr = row['SR']
     p.four = row['4']
     p.fivee = row['5']
-    p.score = 100
+    if p.wickets != '-':
+        p.score = int(p.wickets)/5.8
+    else:
+        p.score = 0
     db.session.add(p)
 
 db.session.commit()
@@ -64,7 +70,10 @@ for index, row in df.iterrows():
     p.catch_wk = row['Ct Wk']
     p.catch_fi = row['Ct Fi']
     p.best = row['MD']
-    p.score = 100
+    if p.dismissals != '-':
+        p.score = int(p.dismissals)/5.4
+    else:
+        p.score = 0
     db.session.add(p)
 
 db.session.commit()

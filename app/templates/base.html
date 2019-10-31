@@ -45,14 +45,15 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
                 </li>
-                {% endif %}
-
                 <li class="nav-item active">
-                        <span class="field-tip">
-                                Profile
-                                <p class="tip-content">Put help text in here!</p>
-                            </span>   
+                    <a class="field-tip nav-link">
+                        Profile
+                        <p class="tip-content">Username: {{ username }}
+                            Score: {{ score }}
+                        </p>
+                    </a>   
                 </li>
+                {% endif %}
                 </ul>
             </div>
         </nav>

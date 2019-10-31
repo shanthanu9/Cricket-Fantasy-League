@@ -42,39 +42,39 @@ $(document).ready(function() {
     });
 
     socket.on('live_match', function(msg) {
-        console.log(msg.match);
+        console.log(msg.match['matchcards']);
         $batting_table.empty();
         $batting_score.empty();
         $bowling_table.empty();
 
             
-            if(msg.match[0].headline === "Batting"){
+            if(msg.match['matchcards'][0].headline === "Batting"){
                 $batting_score.append(
                     `<div class="card1">`+
-                    `<p>Batting Team: ${msg.match[0].teamName}</p>`+
-                    `<p>Score : ${msg.match[0].total}</p>`+
-                    `<p>Runs : ${msg.match[0].runs}</p>`+
+                    `<p>Batting Team: ${msg.match['matchcards'][0].teamName}</p>`+
+                    `<p>Score : ${msg.match['matchcards'][0].total}</p>`+
+                    `<p>Runs : ${msg.match['matchcards'][0].runs}</p>`+
                     `</div>`
                 
                 );
                 // $batting.append(`<table class="batting_table"></table>`);
                     $batting_table.append(`<tr><th>P.Name</th><th>Runs</th><th>Balls Faced</th></tr>`);
-                    for(var i=0;i<msg.match[0].playerDetails.length;i++){
-                        if(msg.match[0].playerDetails[i].dismissal === "not out"){
+                    for(var i=0;i<msg.match['matchcards'][0].playerDetails.length;i++){
+                        if(msg.match['matchcards'][0].playerDetails[i].dismissal === "not out"){
                             $batting_table.append(
                                 `<tr>`+
-                                `<td>${msg.match[0].playerDetails[i].playerName} <sup>*</sup></td>`+ 
-                                `<td>${msg.match[0].playerDetails[i].runs}</td>`+ 
-                                `<td>${msg.match[0].playerDetails[i].ballsFaced}</td>`+ 
+                                `<td>${msg.match['matchcards'][0].playerDetails[i].playerName} <sup>*</sup></td>`+ 
+                                `<td>${msg.match['matchcards'][0].playerDetails[i].runs}</td>`+ 
+                                `<td>${msg.match['matchcards'][0].playerDetails[i].ballsFaced}</td>`+ 
                                 `</tr>`
                             );
                         }
                         else{
                             $batting_table.append(
                                 `<tr>`+
-                                `<td>${msg.match[0].playerDetails[i].playerName}</td>`+ 
-                                `<td>${msg.match[0].playerDetails[i].runs}</td>`+ 
-                                `<td>${msg.match[0].playerDetails[i].ballsFaced}</td>`+ 
+                                `<td>${msg.match['matchcards'][0].playerDetails[i].playerName}</td>`+ 
+                                `<td>${msg.match['matchcards'][0].playerDetails[i].runs}</td>`+ 
+                                `<td>${msg.match['matchcards'][0].playerDetails[i].ballsFaced}</td>`+ 
                                 `</tr>`
                             );
                         }
@@ -83,31 +83,31 @@ $(document).ready(function() {
 
             
 
-            else if(msg.match[1].headline === "Batting"){
+            else if(msg.match['matchcards'][1].headline === "Batting"){
                 $batting_score.append(
-                    `<p>Batting Team: ${msg.match[1].teamName}</p>`+
-                    `<p>Score : ${msg.match[1].total}</p>`+
-                    `<p>Runs : ${msg.match[1].runs}</p>`
+                    `<p>Batting Team: ${msg.match['matchcards'][1].teamName}</p>`+
+                    `<p>Score : ${msg.match['matchcards'][1].total}</p>`+
+                    `<p>Runs : ${msg.match['matchcards'][1].runs}</p>`
                 );
                 // $batting.append(`<table class="batting_table"></table>`);
                     $batting_table.append(`<tr><th>P.Name</th><th>Runs</th><th>Balls Faced</th></tr>`);
 
-                    for(var i=0;i<msg.match[1].playerDetails.length;i++){
-                        if(msg.match[1].playerDetails[i].dismissal === "not out"){
+                    for(var i=0;i<msg.match['matchcards'][1].playerDetails.length;i++){
+                        if(msg.match['matchcards'][1].playerDetails[i].dismissal === "not out"){
                             $batting_table.append(
                                 `<tr>`+
-                                `<td>${msg.match[0].playerDetails[i].playerName} <sup>*</sup></td>`+ 
-                                `<td>${msg.match[0].playerDetails[i].runs}</td>`+ 
-                                `<td>${msg.match[0].playerDetails[i].ballsFaced}</td>`+ 
+                                `<td>${msg.match['matchcards'][0].playerDetails[i].playerName} <sup>*</sup></td>`+ 
+                                `<td>${msg.match['matchcards'][0].playerDetails[i].runs}</td>`+ 
+                                `<td>${msg.match['matchcards'][0].playerDetails[i].ballsFaced}</td>`+ 
                                 `</tr>`
                             );
                         }
                         else{
                             $batting_table.append(
                                 `<tr>`+
-                                `<td>${msg.match[0].playerDetails[i].playerName}</td>`+ 
-                                `<td>${msg.match[0].playerDetails[i].runs}</td>`+ 
-                                `<td>${msg.match[0].playerDetails[i].ballsFaced}</td>`+ 
+                                `<td>${msg.match['matchcards'][0].playerDetails[i].playerName}</td>`+ 
+                                `<td>${msg.match['matchcards'][0].playerDetails[i].runs}</td>`+ 
+                                `<td>${msg.match['matchcards'][0].playerDetails[i].ballsFaced}</td>`+ 
                                 `</tr>`
                             );
                         }
@@ -115,42 +115,42 @@ $(document).ready(function() {
             }
 
 
-            if(msg.match[0].headline === "Bowling"){
+            if(msg.match['matchcards'][0].headline === "Bowling"){
                 $bowling_table.append(
-                    // `<p>Bowling Team: ${msg.match[0].teamName}</p>`
-                    // `<p>Score : ${msg.match[0].total}</p>`+
-                    // `<p>Runs : ${msg.match[0].runs}</p>`
+                    // `<p>Bowling Team: ${msg.match['matchcards'][0].teamName}</p>`
+                    // `<p>Score : ${msg.match['matchcards'][0].total}</p>`+
+                    // `<p>Runs : ${msg.match['matchcards'][0].runs}</p>`
                     `<tr><th>P.Name</th><th>Runs</th><th>Overs</th><th>Wickets</th><th>Economy</th></tr>`
 
                 );
-                    for(var i=0;i<msg.match[0].playerDetails.length;i++){
+                    for(var i=0;i<msg.match['matchcards'][0].playerDetails.length;i++){
                             $bowling_table.append(
                                 `<tr>`+
-                                `<td>${msg.match[0].playerDetails[i].playerName}</td>`+ 
-                                `<td>${msg.match[0].playerDetails[i].conceded}</td>`+
-                                `<td>${msg.match[0].playerDetails[i].overs}</td>`+
-                                `<td>${msg.match[0].playerDetails[i].wickets}</td>`+
-                                `<td>${msg.match[0].playerDetails[i].economyRate}</td>`+ 
+                                `<td>${msg.match['matchcards'][0].playerDetails[i].playerName}</td>`+ 
+                                `<td>${msg.match['matchcards'][0].playerDetails[i].conceded}</td>`+
+                                `<td>${msg.match['matchcards'][0].playerDetails[i].overs}</td>`+
+                                `<td>${msg.match['matchcards'][0].playerDetails[i].wickets}</td>`+
+                                `<td>${msg.match['matchcards'][0].playerDetails[i].economyRate}</td>`+ 
                                 `</tr>`
                             );
                     }    
             }
             
-            if(msg.match[1].headline === "Bowling"){
+            if(msg.match['matchcards'][1].headline === "Bowling"){
                 $bowling_table.append(
-                    // `<p>Bowling Team: ${msg.match[1].teamName}</p>`
-                    // `<p>Score : ${msg.match[0].total}</p>`+
-                    // `<p>Runs : ${msg.match[0].runs}</p>`+
+                    // `<p>Bowling Team: ${msg.match['matchcards'][1].teamName}</p>`
+                    // `<p>Score : ${msg.match['matchcards'][0].total}</p>`+
+                    // `<p>Runs : ${msg.match['matchcards'][0].runs}</p>`+
                     `<tr><th>P.Name</th><th>Runs</th><th>Overs</th><th>Wickets</th><th>Economy</th></tr>`
                 );
-                    for(var i=0;i<msg.match[1].playerDetails.length;i++){
+                    for(var i=0;i<msg.match['matchcards'][1].playerDetails.length;i++){
                             $bowling_table.append(
                                 `<tr>`+
-                                `<td>${msg.match[1].playerDetails[i].playerName}</td>`+ 
-                                `<td>${msg.match[1].playerDetails[i].conceded}</td>`+
-                                `<td>${msg.match[1].playerDetails[i].overs}</td>`+
-                                `<td>${msg.match[1].playerDetails[i].wickets}</td>`+
-                                `<td>${msg.match[1].playerDetails[i].economyRate}</td>`+ 
+                                `<td>${msg.match['matchcards'][1].playerDetails[i].playerName}</td>`+ 
+                                `<td>${msg.match['matchcards'][1].playerDetails[i].conceded}</td>`+
+                                `<td>${msg.match['matchcards'][1].playerDetails[i].overs}</td>`+
+                                `<td>${msg.match['matchcards'][1].playerDetails[i].wickets}</td>`+
+                                `<td>${msg.match['matchcards'][1].playerDetails[i].economyRate}</td>`+ 
                                 `</tr>`
                             );
                     }    
@@ -161,6 +161,10 @@ $(document).ready(function() {
 
     // AJAX request for creating a team
     $(document).on('click', '.make_team', function() { // This syntax because event listener is being added to dynamically created nodes
+        if($matches.attr('match_id')) {
+            alert('You can play one match at a time!');
+            return;
+        }
         var match_id = $(this).attr('match_id');
         // Redirect to relevant URL
         window.location.href = `/myteam?match_id=${match_id}`;

@@ -3,6 +3,7 @@ $(document).ready(function() {
     var player_count = 0;
     var players_chosen = [];
     const max_players = 11;
+    var score = $('#score').text();
 
     const url = new URL(window.location.href);
     var match_id = url.searchParams.get('match_id');
@@ -27,7 +28,7 @@ $(document).ready(function() {
                 player = team[player_id];
                 console.log(player)
                 $(`#team-${i+1}`).append(
-                    `<button class="select example_e" id="team-${i}-player-${player_id}" data-id="${player.id}">${player.name}</button>`
+                    `<button class="select example_e" id="team-${i}-player-${player_id}" data-id="${player.id}" score="${player.score}">${player.name} : ${player.score}</button>`
                 );
             }
         }
@@ -40,11 +41,16 @@ $(document).ready(function() {
             return;
         }
         player_count++;
-        players_chosen.push($(this).attr('data-id'))
+        players_chosen.push($(this).attr('data-id'));
+        console.log(`old_score : ${score}`);
+        score = score - $(this).attr('score');
+        console.log(`new_score : ${score}`);
+        $('#score').text(score); 
         $('#chosen').append(
             `<button class="deselect example_e" id="${$(this).attr('id')}">${$(this).text()}</button>`
         );
         $(this).attr('disabled', true);
+
     });
 
     // Removing players
@@ -52,6 +58,10 @@ $(document).ready(function() {
         player_count--;
         players_chosen = players_chosen.filter(item => item != $(`#${$(this).attr('id')}`).text);
         $(`#${$(this).attr('id')}`).attr('disabled', false);
+        console.log(`old_score : ${score}`);
+        score = +score + +$(`#${$(this).attr('id')}`).attr('score');
+        console.log(`new_score : ${score}`);
+        $('#score').text(score); 
         $(this).remove();
     });
 
@@ -65,7 +75,8 @@ $(document).ready(function() {
         var myteam = {
             match_id: match_id,
             player_count: player_count,
-            players: JSON.stringify(players_chosen)
+            players: JSON.stringify(players_chosen),
+            score: JSON.stringify(score)
         };
 
         $.ajax({

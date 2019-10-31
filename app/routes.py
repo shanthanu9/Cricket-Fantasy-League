@@ -13,8 +13,12 @@ from app.tasks import matches, get_team_details
 def index():
     # Fetch leaderboard from database
     leaderboard = User.query.order_by(User.score.desc()).limit(5)
+    user = User.query.filter_by(username=current_user.username).first()
+    match_id = user.match_id
+    username = user.username
+    score = user.score
     # TODO: Live updates to leaderboard
-    return render_template('index.html', title='Home', leaderboard = leaderboard)
+    return render_template('index.html', title='Home', match_id=match_id, username=username, score=score, leaderboard=leaderboard)
 
 # Renders the login page
 @app.route('/login', methods=['GET', 'POST'])
@@ -49,7 +53,7 @@ def register():
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
-        user.score = 100
+        user.score = 1000
         db.session.add(user)
         db.session.commit()
         flash('Congratulations, you are now a registered user!')
@@ -60,15 +64,21 @@ def register():
 @app.route('/myteam', methods=['GET'])
 def team_selection():
     match_id = request.args.get('match_id', 0)
-    return render_template('myteam.html', match_id=match_id)
+    user = User.query.filter_by(username=current_user.username).first()
+    match_id = user.match_id
+    username = user.username
+    score = user.score
+    return render_template('myteam.html', match_id=match_id, username=username, score=score)
 
 @app.route('/createteam', methods=['POST'])
 def create_team():
+    score = request.form['score']
     match_id = request.form['match_id']
     player_count = request.form['player_count']
     player_ids = eval(request.form['players'])
     user = User.query.filter_by(username=current_user.username).first()
     user.match_id = int(match_id)
+    user.score = float(score)
     for player_id in player_ids:
         print(player_id)
         c = ChosenPlayer(user_id=user.id, player_id=player_id)

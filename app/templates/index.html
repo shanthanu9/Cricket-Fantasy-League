@@ -3,9 +3,13 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='slick/slick-theme.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}" /> {% endblock %} {% block content %}
 <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
-<h1>Hello {{ current_user.username }}!</h1>
+<!-- <h1>Hello {{ current_user.username }}!</h1> -->
 <h2 align="center">Matches</h2>
+{% if match_id is none %}
 <div id="matches">
+{% else %}
+<div id="matches" match_id="{{ match_id }}">
+{% endif %}
     <div class="spinner">
         <div class="rect1"></div>
         <div class="rect2"></div>

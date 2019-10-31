@@ -12,7 +12,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    score = db.Column(db.Integer)
+    score = db.Column(db.Float)
     match_id = db.Column(db.String(20))
 
     chosen_players = db.relationship('ChosenPlayer')

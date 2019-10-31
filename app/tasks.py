@@ -1,7 +1,7 @@
 # from time import sleep
 import requests
 from app import db
-from app.models import Fielding
+from app.models import Batting, Bowling, Fielding
 from bs4 import BeautifulSoup
 import re
 import json
@@ -171,9 +171,22 @@ def get_match_details_from_raw_data(data):
     Extracts relevant details from data
     and returns match details.
     """
-    return data['matchcards']
+    match = {}
+    scores = []
+    for roster in data['rosters']:
+        s = []
+        for player in roster['roster']:
+            id = get_player_id_from_name(player['athlete']['battingName'])
+            score = get_player_score_from_id(id)
+            # TODO: Define logic for new score
+            new_score = score
+            s.append(new_score)
+        scores.append(s)
+    match['matchcards'] = data['matchcards']
+    match['scores'] = scores
+    return match
 
-def update_match_details(socketio, match_id, period):
+def update_match_details(match_id, period):
     """
     Sends match details clients who ask for it.
     
@@ -183,10 +196,10 @@ def update_match_details(socketio, match_id, period):
         with matches_lock:
             match = get_match_from_id(match_id)
             match_details = get_match_details(match_id)
-            emit_match_details(socketio, match_details)            
+            emit_match_details(match_details)            
         socketio.sleep(period)
 
-def emit_match_details(socketio, match_details):
+def emit_match_details(match_details):
     """
     `Emits` back match details via socketio.
     If the client requests it, reply goes back 
@@ -213,7 +226,7 @@ def get_player_id_from_name(player_name):
     player = Fielding.query.filter(Fielding.player.like(search)).first()
     if player is None:
         new_player = Fielding(player=player_name)
-        new_player.score = 5
+        new_player.score = 0
         db.session.add(new_player)
         db.session.commit()
         return new_player.id
@@ -224,4 +237,16 @@ def get_player_score_from_id(player_id):
     Get score of player from batting
     """
     return db.session.query(Fielding).get(player_id).score
-
+    #TODO: Implement this correctly
+    score = 0
+    player_name = db.session.query(Fielding).get(player_id)
+    score1 = db.session.query(Batting).filter_by(player=player_name)
+    score2 = db.session.query(Bowling).filter_by(player=player_name).first()
+    score3 = db.session.query(Fielding).filter_by(player=player_name).first()
+    if score1 is not None:
+        score += score1
+    if score2 is not None:
+        score += score2
+    if score3 is not None:
+        score += score3
+    return score/3
