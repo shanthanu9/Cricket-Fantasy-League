@@ -14,12 +14,13 @@ table {
     border-radius: 0.25em;
     border-collapse: collapse;
     margin: 1em;
+    font-size: 0.75em;
 }
 
 th {
     border-bottom: 1px solid #364043;
     color: #E2B842;
-    font-size: 0.85em;
+    /* font-size: 0.85em; */
     font-weight: 600;
     padding: 0.5em 1em;
     text-align: left;
@@ -172,9 +173,13 @@ a:hover {
 }
 
 #right {
-    padding-right: 300px;
+    /* padding-right: 150px; */
+    margin: auto !important;
 }
-
+#tab{
+    /* margin-right:50px; */
+    margin: auto    !important;
+}
 #wrapper {
     display:table;
     /* width:100%; */

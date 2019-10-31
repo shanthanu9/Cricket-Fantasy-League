@@ -2,18 +2,32 @@
 
 {% block styles %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/myteam.css') }}" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-<h1>{{ match_id }}</h1>
+<!-- <h1>{{ match_id }}</h1> -->
 <!-- <p>{{ match }}</p> -->
-<p>Score: <span id="score">{{ score }}</span></p>
+<p align="center" id="score1">Score: <span id="score">{{ score }}</span></p>
 <div id="wrapper">
-<div id="team-1" class="btn-group"></div>
-<div id="team-2" class="btn-group"></div>
+<div id="team-1" class="btn-group"><div class="spinner">
+    <div class="rect1"></div>
+    <div class="rect2"></div>
+    <div class="rect3"></div>
+    <div class="rect4"></div>
+    <div class="rect5"></div>
+</div></div>
+<div id="team-2" class="btn-group"><div class="spinner">
+    <div class="rect1"></div>
+    <div class="rect2"></div>
+    <div class="rect3"></div>
+    <div class="rect4"></div>
+    <div class="rect5"></div>
+</div></div>
 <div id="chosen" class="btn-group"></div>
 </div>
 <div id="submit-team">
+    <br><br>
     <button id="submit-button">Make Team!</button>
 </div>
 {% endblock %} 

@@ -1,12 +1,13 @@
 # from time import sleep
 import requests
 from app import db
-from app.models import Batting, Bowling, Fielding
+from app.models import Batting, Bowling, Fielding, User
 from bs4 import BeautifulSoup
 import re
 import json
 from app import socketio
 from threading import Lock
+from flask_login import current_user, login_user, logout_user, login_required
 
 # Keeps track of all upcoming, live and recently concluded matches.
 matches = [] # Ideally should be in database. But this is okay bcoz number of matches is quite less (< 10)
@@ -143,13 +144,15 @@ def get_team_details_from_raw_data(data):
     # Get roster
     teams = []
     for roster in data['rosters']:
-        team = []
+        team = {}
+        team['teamname'] = roster['team']['abbreviation']
+        team['roster'] = []
         for p in roster['roster']:
             player = {}
             player['name'] = p['athlete']['battingName']
             player['id'] = get_player_id_from_name(player['name'])
             player['score'] =  get_player_score_from_id(player['id'])
-            team.append(player)
+            team['roster'].append(player)
         teams.append(team)
     
     match['teams'] = teams
@@ -182,7 +185,7 @@ def get_match_details_from_raw_data(data):
                     score = get_player_score_from_id(id)
                     print("RUNS>>>>>>>>>>>>>>"+player['runs'])
                     new_scores[player['playerName']] = score + int(player['runs'])
-        else:
+        if matchcard['headline'] == 'Bowling':
             for player in matchcard['playerDetails']:
                 id = get_player_id_from_name(player['playerName'])
                 score = get_player_score_from_id(id)
@@ -198,9 +201,15 @@ def get_match_details_from_raw_data(data):
             score = get_player_score_from_id(id)
             # TODO: Define logic for new score
             if player['athlete']['battingName'] in new_scores:
-                s['roster'].append({player['athlete']['battingName']: new_scores[player['athlete']['battingName']]})
+                s['roster'].append({
+                    'player': player['athlete']['battingName'],
+                    'score': new_scores[player['athlete']['battingName']]
+                    })
             else:
-                s['roster'].append({player['athlete']['battingName']: score})
+                s['roster'].append({
+                    'player': player['athlete']['battingName'],
+                    'score': score
+                    })
         scores.append(s)
     match['scores'] = scores
     return match
@@ -272,3 +281,50 @@ def get_player_score_from_id(player_id):
         return 5
     else:
        return int((score/3) * 10)
+
+def update_user_score(data):
+    score1 = 0
+    match = {}
+    match['matchcards'] = data['matchcards']
+    new_scores = {}
+    for matchcard in match['matchcards']:
+        if matchcard['headline'] == 'Batting':
+            for player in matchcard['playerDetails']:
+                if player['ballsFaced'] is not '':
+                    id = get_player_id_from_name(player['playerName'])
+                    score = get_player_score_from_id(id)
+                    print("RUNS>>>>>>>>>>>>>>"+player['runs'])
+                    new_scores[player['playerName']] = score + int(player['runs'])
+                    score1 += score
+        if matchcard['headline'] == 'Bowling':
+            for player in matchcard['playerDetails']:
+                id = get_player_id_from_name(player['playerName'])
+                score = get_player_score_from_id(id)
+                new_scores[player['playerName']] = score + 20*int(player['wickets']) - int(player['conceded'])
+                score1 += score
+
+    scores = []
+    for roster in data['rosters']:
+        s = {}
+        s['teamname'] = roster['team']['abbreviation']
+        s['roster'] = []
+        for player in roster['roster']:
+            id = get_player_id_from_name(player['athlete']['battingName'])
+            score = get_player_score_from_id(id)
+            # TODO: Define logic for new score
+            if player['athlete']['battingName'] in new_scores:
+                s['roster'].append({
+                    'player': player['athlete']['battingName'],
+                    'score': new_scores[player['athlete']['battingName']]
+                    })
+            else:
+                s['roster'].append({
+                    'player': player['athlete']['battingName'],
+                    'score': score
+                    })
+        scores.append(s)
+    match['scores'] = scores
+    user = User.query.filter_by(username=current_user.username).first()
+    user.score = score1
+    db.session.commit()
+    

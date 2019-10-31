@@ -6,6 +6,7 @@ $(document).ready(function() {
     var $batting_table = $('.batting_table');
     var $batting_score = $('.batting_score');
     var $bowling_table = $('.bowling_table');
+    var $selected_players = $('.selected_players');
 
     // Slick Carousal
     $matches.slick({
@@ -24,14 +25,27 @@ $(document).ready(function() {
         for(var i = 0; i < msg.matches.length; i++) {
             match = msg.matches[i];
             console.log('Added match');
-            $matches.append(
-                `<div class="match card">`+
-                    `<p>${match.status}<\p>`+
-                    `<p>${match.teams[0].name} : ${match.teams[0].score}</p>`+
-                    `<p>${match.teams[1].name} : ${match.teams[1].score}</p>`+
-                    `<button match_id="${match.id}" class="make_team">Make team!</button>`+
-                `</div>`
-                );
+            if(match.status != 'Result') {
+                if(match.status == 'default') match.status = 'Scheduled';
+                $matches.append(
+                    `<div class="match card">`+
+                        `<p>${match.status}<\p>`+
+                        `<p>${match.teams[0].name} : ${match.teams[0].score}</p>`+
+                        `<p>${match.teams[1].name} : ${match.teams[1].score}</p>`+
+                        `<button match_id="${match.id}" class="make_team">Make team!</button>`+
+                    `</div>`
+                    );
+            }
+            else {
+                $matches.append(
+                    `<div class="match card">`+
+                        `<p>${match.status}<\p>`+
+                        `<p>${match.teams[0].name} : ${match.teams[0].score}</p>`+
+                        `<p>${match.teams[1].name} : ${match.teams[1].score}</p>`+
+                        `<button match_id="${match.id}" class="make_team" disabled>Match done!</button>`+
+                    `</div>`
+                    );
+            }
         }
         // slick carousal
         $matches.slick({
@@ -46,6 +60,7 @@ $(document).ready(function() {
         $batting_table.empty();
         $batting_score.empty();
         $bowling_table.empty();
+        $selected_players.empty();
 
             
             if(msg.match['matchcards'][0].headline === "Batting"){
@@ -156,6 +171,21 @@ $(document).ready(function() {
                     }    
             }
             
+
+            $selected_players.append(
+                `<tr><th>${msg.match['scores'][0].teamname}</th><th>Points</th><th>${msg.match['scores'][1].teamname}</th><th>Points</th></tr>`
+            );
+
+            for(var i=0; i<msg.match['scores'][0].roster.length ; i++ ){
+                $selected_players.append(
+                    `<tr>`+
+                    `<td>${msg.match['scores'][0].roster[i].player}</td>`+ 
+                    `<td>${msg.match['scores'][0].roster[i].score}</td>`+                     
+                    `<td>${msg.match['scores'][1].roster[i].player}</td>`+                                         
+                    `<td>${msg.match['scores'][1].roster[i].score}</td>`+ 
+                    `</tr>`
+                );
+            }
 
     });
 

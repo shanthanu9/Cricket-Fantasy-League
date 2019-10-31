@@ -71,5 +71,87 @@
 
 body {
     background-image: url(../images/back.png);
+    font-family: 'Open Sans', sans-serif;
 }
 
+#score1{
+  font-size: 25px;
+}
+
+
+.spinner {
+  margin: 100px auto;
+  width: 50px;
+  height: 40px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.spinner>div {
+  background-color: #333;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.spinner .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+
+.spinner .rect3 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+.spinner .rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+
+.spinner .rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+  0%,
+  40%,
+  100% {
+      -webkit-transform: scaleY(0.4)
+  }
+  20% {
+      -webkit-transform: scaleY(1.0)
+  }
+}
+
+@keyframes sk-stretchdelay {
+  0%,
+  40%,
+  100% {
+      transform: scaleY(0.4);
+      -webkit-transform: scaleY(0.4);
+  }
+  20% {
+      transform: scaleY(1.0);
+      -webkit-transform: scaleY(1.0);
+  }
+}
+
+.teamName{
+  color: rgb(157, 255, 0)4;
+  padding-left: 120px;
+  font-size: 25px;
+}
+
+#submit-team{
+  margin-left: 900px;
+  /* width:50%; */
+  }
+#submit-button{
+  /* padding: 25px 25px; */
+  font-size: 20px;
+  background-color: #2cff01;
+}

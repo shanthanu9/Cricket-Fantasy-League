@@ -26,7 +26,7 @@
     <div class="card live_match" align="left" id="left">
         <p>Scorecard</p>
         <div class="wrappers">
-                <div class="batting_score"></div>
+                <div class="batting_score">You have not made a team yet!</div>
             <div class="batting" id="batting">
                     <table class="batting_table"></table>
             </div>
@@ -36,21 +36,28 @@
         </div>
     </div>
 
-    <div align="right" id="right">
-        <table>
-            <h2>Leaderboard</h2>
-            <tr>
-                <th>Name</th>
-                <th>Score</th>
-            </tr>
-            {% for player in leaderboard %}
-            <tr>
-                <td>{{ player.username }}</td>
-                <td>{{ player.score }}</td>
-            </tr>
-            {% endfor %}
+    <div id="right">
+            <h2 style="margin-left: 210px;">Leaderboard</h2>
+            <table id="tab" style="align-self: center;">
+                <tr>
+                    <th>Name</th>
+                    <th>Score</th>
+                </tr>
+                {% for player in leaderboard %}
+                <tr>
+                    <td>{{ player.username }}</td>
+                    <td>{{ player.score }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+    </div>
+
+    <div id="right2" id="right1">
+        <table class="selected_players">
+
         </table>
     </div>
+
 </div>
 
 {% endblock %} 

@@ -19,11 +19,14 @@ $(document).ready(function() {
 
     socket.on('match', function(msg) {
         console.log('Fetched team details');
-        $('#team1').empty();
-        $('#team2').empty();
+        $('#team-1').empty();
+        $('#team-2').empty();
         let teams = msg.match.teams;
         for(let i = 0; i < teams.length; i++) {
-            let team = teams[i];
+            let team = teams[i]['roster'];
+            $(`#team-${i+1}`).append(
+                `<div class="teamName" style="text-align:left">${teams[i]['teamname']}</div>`
+            );
             for(let player_id = 0; player_id < team.length; player_id++) {
                 player = team[player_id];
                 console.log(player)
