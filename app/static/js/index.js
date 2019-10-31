@@ -42,7 +42,7 @@ $(document).ready(function() {
     });
 
     socket.on('live_match', function(msg) {
-        console.log(msg.match['matchcards']);
+        console.log(msg.match);
         $batting_table.empty();
         $batting_score.empty();
         $bowling_table.empty();

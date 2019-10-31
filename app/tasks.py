@@ -172,17 +172,36 @@ def get_match_details_from_raw_data(data):
     and returns match details.
     """
     match = {}
+    match['matchcards'] = data['matchcards']
+    new_scores = {}
+    for matchcard in match['matchcards']:
+        if matchcard['headline'] == 'Batting':
+            for player in matchcard['playerDetails']:
+                if player['ballsFaced'] is not '':
+                    id = get_player_id_from_name(player['playerName'])
+                    score = get_player_score_from_id(id)
+                    print("RUNS>>>>>>>>>>>>>>"+player['runs'])
+                    new_scores[player['playerName']] = score + int(player['runs'])
+        else:
+            for player in matchcard['playerDetails']:
+                id = get_player_id_from_name(player['playerName'])
+                score = get_player_score_from_id(id)
+                new_scores[player['playerName']] = score + 20*int(player['wickets']) - int(player['conceded'])
+
     scores = []
     for roster in data['rosters']:
-        s = []
+        s = {}
+        s['teamname'] = roster['team']['abbreviation']
+        s['roster'] = []
         for player in roster['roster']:
             id = get_player_id_from_name(player['athlete']['battingName'])
             score = get_player_score_from_id(id)
             # TODO: Define logic for new score
-            new_score = score
-            s.append(new_score)
+            if player['athlete']['battingName'] in new_scores:
+                s['roster'].append({player['athlete']['battingName']: new_scores[player['athlete']['battingName']]})
+            else:
+                s['roster'].append({player['athlete']['battingName']: score})
         scores.append(s)
-    match['matchcards'] = data['matchcards']
     match['scores'] = scores
     return match
 
@@ -236,17 +255,20 @@ def get_player_score_from_id(player_id):
     """
     Get score of player from batting
     """
-    return db.session.query(Fielding).get(player_id).score
+    # return db.session.query(Fielding).get(player_id).score
     #TODO: Implement this correctly
     score = 0
-    player_name = db.session.query(Fielding).get(player_id)
-    score1 = db.session.query(Batting).filter_by(player=player_name)
+    player_name = db.session.query(Fielding).get(player_id).player
+    score1 = db.session.query(Batting).filter_by(player=player_name).first()
     score2 = db.session.query(Bowling).filter_by(player=player_name).first()
     score3 = db.session.query(Fielding).filter_by(player=player_name).first()
     if score1 is not None:
-        score += score1
+        score += score1.score
     if score2 is not None:
-        score += score2
+        score += score2.score
     if score3 is not None:
-        score += score3
-    return score/3
+        score += score3.score
+    if score * 10 < 15:
+        return 5
+    else:
+       return int((score/3) * 10)
